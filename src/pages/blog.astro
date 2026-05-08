@@ -1,0 +1,265 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+const posts = await getCollection("blog");
+
+const sortedPosts = posts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+if (!sortedPosts.length) {
+  throw new Error("No hay posts en src/content/blog");
+}
+
+const renderedPosts = await Promise.all(
+  sortedPosts.map(async (post) => {
+    const { Content } = await render(post);
+    return { post, Content };
+  }),
+);
+
+const latestPost = sortedPosts[0];
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+---
+
+<Layout>
+  <section
+    class="min-h-screen px-6 sm:px-10 lg:px-[10%] py-16 sm:py-20 lg:py-24 bg-[#f8f8f6] text-black"
+  >
+    <div class="max-w-7xl mx-auto">
+      <a
+        href="/portfolio/"
+        class="inline-flex items-center gap-3 mb-10 text-xs sm:text-sm uppercase tracking-[0.2em]
+        text-gray-500 hover:text-black transition duration-300 group shrink-0"
+      >
+        <span
+          class="w-8 sm:w-10 h-[1px] bg-gray-400 group-hover:w-14 group-hover:bg-black transition-all duration-300"
+        ></span>
+        Volver
+      </a>
+
+      <div class="mb-10 sm:mb-12 shrink-0">
+        <p
+          class="text-xs sm:text-sm tracking-[0.3em] uppercase text-gray-500 mb-4"
+        >
+          Blog
+        </p>
+
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight max-w-5xl"
+        >
+          Comparto mis pensamientos y aprendizajes.
+        </h1>
+      </div>
+
+      <div class="lg:hidden mb-8 shrink-0">
+        <label
+          class="block text-xs uppercase tracking-[0.2em] text-gray-500 mb-3"
+        >
+          Entradas
+        </label>
+
+        <select
+          id="post-select"
+          class="w-full bg-transparent border border-gray-300 px-4 py-4 text-base font-medium
+          focus:outline-none focus:border-black transition"
+        >
+          {
+            sortedPosts.map((post) => (
+              <option value={post.id} selected={post.id === latestPost.id}>
+                {post.data.title}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+
+      <div
+       class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-14 lg:gap-20 lg:items-start"
+      >
+        <aside
+         class="hidden lg:block border-r border-gray-300 pr-10 lg:sticky lg:top-24"
+        >
+          <p
+            class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-8"
+          >
+            Entradas
+          </p>
+
+          <nav class="flex flex-col gap-8">
+            {
+              sortedPosts.map((post) => (
+                <button
+                  type="button"
+                  data-post-button={post.id}
+                  class={`group text-left transition ${
+                    post.id === latestPost.id
+                      ? "opacity-100"
+                      : "opacity-50 hover:opacity-100"
+                  }`}
+                >
+                  <span class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">
+                    {formatDate(post.data.date)}
+                  </span>
+
+                  <span class="block text-xl sm:text-2xl font-medium text-gray-500 group-hover:text-black transition leading-snug">
+                    {post.data.title}
+                  </span>
+
+                  <span class="block mt-2 text-sm leading-relaxed text-gray-400">
+                    {post.data.excerpt}
+                  </span>
+                </button>
+              ))
+            }
+          </nav>
+        </aside>
+
+        <main
+          id="post-scroll"
+          class="max-w-4xl pr-0 lg:pr-6 pb-20"
+        >
+          {
+            renderedPosts.map(({ post, Content }) => (
+              <article
+                data-post-content={post.id}
+                class={`transition-all duration-500 ${
+                  post.id === latestPost.id ? "block" : "hidden"
+                }`}
+              >
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10 sm:mb-14">
+                  <div>
+                    <p class="text-xs sm:text-sm uppercase tracking-[0.25em] text-gray-500 mb-4">
+                      {formatDate(post.data.date)}
+                    </p>
+
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-10 sm:mb-14 leading-tight">
+                      {post.data.title}
+                    </h2>
+                  </div>
+
+                  <button
+                    type="button"
+                    data-share-button={post.id}
+                    data-share-title={post.data.title}
+                    class="self-start sm:self-end inline-flex items-center gap-3 text-xs uppercase tracking-[0.2em]
+  text-gray-500 hover:text-black transition duration-300 group"
+                  >
+                    <span
+                      class="w-8 h-[1px] bg-gray-400
+    group-hover:w-12 group-hover:bg-black
+    transition-all duration-300"
+                    />
+                    Compartir
+                  </button>
+                </div>
+
+                <div class="blog-content max-w-3xl">
+                  <Content />
+                </div>
+              </article>
+            ))
+          }
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const buttons = document.querySelectorAll("[data-post-button]");
+    const articles = document.querySelectorAll("[data-post-content]");
+    const select = document.querySelector("#post-select");
+    const scrollContainer = document.querySelector("#post-scroll");
+
+    const shareButtons = document.querySelectorAll("[data-share-button]");
+
+    const base = import.meta.env.BASE_URL;
+
+    const route = (path: string) => {
+      return `${base}/${path}`.replace(/\/+/g, "/");
+    };
+
+    function getPostUrl(id) {
+      return route(`blog?post=${id}`);
+    }
+
+    function showPost(id) {
+
+      window.history.replaceState({}, "", route(`blog?post=${id}`));
+
+      articles.forEach((article) => {
+        article.classList.toggle("hidden", article.dataset.postContent !== id);
+        article.classList.toggle("block", article.dataset.postContent === id);
+      });
+
+      buttons.forEach((button) => {
+        const active = button.dataset.postButton === id;
+        button.classList.toggle("opacity-100", active);
+        button.classList.toggle("opacity-50", !active);
+      });
+
+      if (select) {
+        select.value = id;
+      }
+
+      scrollContainer?.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        showPost(button.dataset.postButton);
+      });
+    });
+
+    select?.addEventListener("change", (event) => {
+      showPost(event.target.value);
+    });
+
+    shareButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const id = button.dataset.shareButton;
+        const url = getPostUrl(id);
+
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              url,
+            });
+            return;
+          }
+
+          await navigator.clipboard.writeText(url);
+
+          const originalText = button.innerHTML;
+          button.innerHTML = `
+        <span class="w-8 h-[1px] bg-black"></span>
+        Copiado
+      `;
+
+          setTimeout(() => {
+            button.innerHTML = originalText;
+          }, 1800);
+        } catch (error) {
+          console.error("Error compartiendo el post:", error);
+        }
+      });
+    });
+
+    const initialPost = new URLSearchParams(window.location.search).get("post");
+
+    if (initialPost) {
+      showPost(initialPost);
+    }
+  </script>
+</Layout>

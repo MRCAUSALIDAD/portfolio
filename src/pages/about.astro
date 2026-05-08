@@ -1,0 +1,203 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+import juego1 from "../assets/juego_1.png";
+import juego2 from "../assets/juego_2.png";
+import web1 from "../assets/web_1.png";
+import web2 from "../assets/web_2.png";
+---
+
+<Layout>
+  <section
+    class="min-h-screen px-6 sm:px-10 lg:px-[10%] py-20 sm:py-24 lg:py-24 bg-[#f8f8f6] text-black"
+  >
+    <div class="max-w-6xl mx-auto">
+      <a
+        href="/portfolio/"
+        class="inline-flex items-center gap-3 mb-14 sm:mb-16 lg:mb-20 text-xs sm:text-sm uppercase tracking-[0.2em]
+        text-gray-500 hover:text-black transition duration-300 group"
+      >
+        <span
+          class="w-8 sm:w-10 h-[1px] bg-gray-400
+          group-hover:w-14 group-hover:bg-black
+          transition-all duration-300"
+        ></span>
+
+        Volver
+      </a>
+
+      <div class="mb-16 sm:mb-20 lg:mb-24">
+        <p
+          class="text-xs sm:text-sm tracking-[0.3em] uppercase text-gray-500 mb-4"
+        >
+          Sobre mí
+        </p>
+
+        <h2
+          class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight max-w-4xl"
+        >
+          Gabriel
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-14 sm:gap-16 lg:gap-20">
+        <div>
+          <p class="text-lg sm:text-xl leading-relaxed text-gray-700">
+            Desde que tengo uso de razón he estado estudiando, investigando y
+            jugando con la tecnología. Mi primer encuentro con un lenguaje de
+            programación fue a los 9 años. En ese momento estaba obsesionado con
+            un videojuego llamado Dofus y, como no tenía dinero para pagar el
+            abono que ofrecían para expandir la aventura, creé mi propio
+            servidor y jugué con amigos en él. Fue ahí donde conocí Java, un
+            lenguaje que me enamoró.
+          </p>
+
+          <div class="mt-10 space-y-5">
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500"
+            >
+              Mi primer servidor
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <img
+                src={juego1.src}
+                alt="Servidor privado de Dofus"
+                class="rounded-2xl shadow-sm border border-black/5 object-cover w-full h-full"
+              />
+
+              <img
+                src={juego2.src}
+                alt="Captura del servidor de juego"
+                class="rounded-2xl shadow-sm border border-black/5 object-cover w-full h-full"
+              />
+            </div>
+          </div>
+
+          <p class="mt-10 text-lg sm:text-xl leading-relaxed text-gray-700">
+            Desde entonces, cada vez que hacía cualquier cosa con mis amigos,
+            como jugar al fútbol o cualquier otro plan, me paraba a pensar qué
+            podía hacer para profesionalizar más nuestra experiencia. De hecho,
+            con 11 años creé una web donde podíamos charlar en un chat,
+            compartir vídeos de YouTube, organizar partidos de fútbol y varias
+            cositas más.
+          </p>
+
+          <div class="mt-10 space-y-5">
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500"
+            >
+              Mi primera web
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <img
+                src={web1.src}
+                alt="Primera web creada"
+                class="rounded-2xl shadow-sm border border-black/5 object-cover w-full"
+              />
+
+              <img
+                src={web2.src}
+                alt="Captura de la web con chat y organización"
+                class="rounded-2xl shadow-sm border border-black/5 object-cover w-full"
+              />
+            </div>
+          </div>
+
+          <p class="mt-10 text-lg sm:text-xl leading-relaxed text-gray-700">
+            No me gusta construir por construir. Me gusta entender el problema,
+            simplificarlo y resolverlo.
+          </p>
+        </div>
+
+        <div class="space-y-10 sm:space-y-12">
+
+          <div>
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3"
+            >
+              Stack Frontend
+            </p>
+
+            <p class="text-xl sm:text-2xl leading-relaxed">
+              JavaScript - TypeScript - Angular - React - Tailwind CSS
+            </p>
+          </div>
+
+          <div>
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3"
+            >
+              Stack Backend
+            </p>
+
+            <p class="text-xl sm:text-2xl leading-relaxed">
+              Java - Python - C - Node.js
+            </p>
+          </div>
+
+          <div>
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3"
+            >
+              Bases de Datos
+            </p>
+
+            <p class="text-xl sm:text-2xl leading-relaxed">
+              PostgreSQL - Oracle - MongoDB
+            </p>
+          </div>
+
+          <div>
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3"
+            >
+              DevOps & Infraestructura
+            </p>
+
+            <p class="text-xl sm:text-2xl leading-relaxed">
+              Docker - Kubernetes - Linux
+            </p>
+          </div>
+
+          <div>
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3"
+            >
+              Testing
+            </p>
+
+            <p class="text-xl sm:text-2xl leading-relaxed">
+              JUnit 5 - Mockito - AssertJ - pytest - CMocka - Jest - Vitest
+            </p>
+          </div>
+          <div>
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3"
+            >
+              Actualmente
+            </p>
+
+            <p class="text-lg sm:text-xl text-gray-700 leading-relaxed">
+              Construyendo proyectos personales, estudiando nuevas tecnologías y
+              descubriendo nuevos hobbies.
+            </p>
+          </div>
+
+          <div>
+            <p
+              class="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3"
+            >
+              Filosofía
+            </p>
+
+            <p class="text-lg sm:text-xl italic leading-relaxed">
+              “Analizar el problema y resolver.”
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
